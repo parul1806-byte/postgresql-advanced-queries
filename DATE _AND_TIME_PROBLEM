@@ -1,0 +1,36 @@
+--Q1. Find all dates where the temperature is lower than the previous day.
+select w1.record_date from weather w1
+join weather w2
+on w1.record_date = w2.record_date + INTERVAL  '1 DAY'
+where w1.temperature < w2.temperature;
+
+--Q2. Find all dates where the temperature is the highest compared to the previous 3 days
+select w1.record_date from weather w1
+join weather w2 on w1.record_date = w2.record_date + INTERVAL  '1 DAY'
+join weather w3 on w1.record_date = w3.record_date + INTERVAL '2 DAY'
+JOIN  weather w4 on w1.record_date = w4.record_date + INTERVAL '3 DAY'
+where w1.temperature > W2.temperature and 
+w1.temperature > w3.temperature and
+w1.temperature > w4.temperature ;
+
+--Q3. Find the largest temperature increase between two consecutive days
+select w1.record_date, (w1.temperature - w2.temperature) as temp_inc from weather w1
+join weather w2
+on w1.record_date = w2.record_date + INTERVAL  '1 DAY'
+order by temp_inc DESC
+LIMIT 1
+;
+
+--Q4. List all consecutive days where the temperature remained the same
+select w1.record_date , w2.record_date , w1.temperature as SAME_TEMP from weather w1
+join weather w2
+on w1.record_date = w2.record_date + INTERVAL  '1 DAY'
+where w1.temperature = w2.temperature;
+
+--Q5. Find the date with the biggest temperature drop compared to the previous day
+select w1.record_date, (w1.temperature - w2.temperature) as temp_inc from weather w1
+join weather w2
+on w1.record_date = w2.record_date + INTERVAL  '1 DAY'
+order by temp_inc ASC
+LIMIT 1
+;
